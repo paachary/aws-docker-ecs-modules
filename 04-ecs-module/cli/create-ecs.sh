@@ -6,7 +6,7 @@ aws ecs create-cluster --cluster-name BlogApplication-Cluster
 # Create log groups
 aws logs create-log-group --log-group-name blogapplication-logs
 
-aws ecs register-task-definition --cli-input-json file://~/environment/aws-docker-ecs-modules/ecs-module/cli/task-definition.json
+aws ecs register-task-definition --cli-input-json file://~/environment/aws-docker-ecs-modules/04-ecs-module/cli/task-definition.json
 
 # Create An Application Load Balancer
 aws elbv2 create-load-balancer --name blogapplication-alb --scheme internet-facing --type application --subnets REPLACE_ME_PUBLIC_SUBNET_ONE REPLACE_ME_PUBLIC_SUBNET_TWO > ~/environment/alb-output.json
