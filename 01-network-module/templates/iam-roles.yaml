@@ -1,14 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: |
-  
-Parameters:
-  
-Metadata:
-  
-Mappings:
-  
-Conditions:
-  
+ 
 Resources:
   # This is an IAM role which authorizes ECS to manage resources on your
   # account on your behalf, such as updating your load balancer with the
@@ -203,8 +194,6 @@ Resources:
             - "ecr:GetAuthorizationToken"
             Resource: "*"
   
-Transform:
-  
 Outputs:
 
   CodeBuildRole:
@@ -226,4 +215,4 @@ Outputs:
     Description: REPLACE_ME_ECS_TASK_ROLE_ARN
     Value: !GetAtt 'ECSTaskRole.Arn'
     Export:
-      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSTaskRole' ] ]      
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ECSTaskRole' ] ]
