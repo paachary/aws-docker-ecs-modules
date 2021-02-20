@@ -13,4 +13,4 @@ export POSTGRES_PW=emp@13%loyee^
 flask db stamp head
 flask db migrate -m "installing the db code"
 flask db upgrade
-exec gunicorn -b :8000 --access-logfile - --error-logfile - microblog:app
+exec gunicorn -b :80 --access-logfile - --error-logfile - microblog:app
