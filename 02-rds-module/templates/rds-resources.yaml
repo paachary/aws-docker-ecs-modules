@@ -10,7 +10,7 @@ Resources:
     Properties: 
         GroupDescription: Security Group for Postgres RDS
         SecurityGroupIngress:
-            - SourceSecurityGroupId: !ImportValue webapp-security-group
+            - CidrIp: '0.0.0.0/0'
               Description: 'Allowing connection to postgres port from webapp security group'
               FromPort: 5432
               IpProtocol: tcp
@@ -26,9 +26,9 @@ Resources:
       DBSubnetGroupDescription: Subnet group for the database instances
       DBSubnetGroupName: employee-subnet-group
       SubnetIds: 
-        - !ImportValue vpc-subnet-dbc
-        - !ImportValue vpc-subnet-dba
-        - !ImportValue vpc-subnet-dbb
+        - !ImportValue vpc-subnet-webc
+        - !ImportValue vpc-subnet-weba
+        - !ImportValue vpc-subnet-webb
 
   PostgresRds:
     Type: AWS::RDS::DBInstance
@@ -47,13 +47,29 @@ Resources:
       MasterUserPassword: '{{resolve:secretsmanager:PostgresRdsDbSecretPwd:SecretString:password}}'
       MultiAZ: false
       Port: 5432
-      PubliclyAccessible: false
+      PubliclyAccessible: true
       StorageType: gp2
       Tags: 
         - Key: Name
           Value: employee-postgres-rds
       VPCSecurityGroups: 
         - !Ref PostgresDBSecurityGroup
+        
+  RdsHostNameParam:
+    Type: AWS::SSM::Parameter
+    Properties: 
+      DataType: text
+      Description: Stores the rds host name
+      Name: DbHostUrl
+      Type: String
+      Value: !Join
+            - ':'
+            - - !GetAtt
+                - PostgresRds
+                - Endpoint.Address
+              - !GetAtt
+                - PostgresRds
+                - Endpoint.Port        
 
 Outputs:
   PostgresRdsHostURL:
