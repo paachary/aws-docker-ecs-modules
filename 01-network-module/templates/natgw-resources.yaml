@@ -45,3 +45,15 @@ Resources:
       Properties: 
           RouteTableId: !Ref VpcRouteTable
           SubnetId: !ImportValue vpc-subnet-dba
+
+  SubnetRoute2TableAssoc:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+          RouteTableId: !Ref VpcRouteTable
+          SubnetId: !ImportValue vpc-subnet-dbb          
+
+  SubnetRoute3TableAssoc:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+          RouteTableId: !Ref VpcRouteTable
+          SubnetId: !ImportValue vpc-subnet-dbc 
