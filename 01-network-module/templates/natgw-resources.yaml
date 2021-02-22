@@ -1,78 +1,100 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Description:
-  A template for creating a NAT gateway, Elastic public ip, a route table and a mapping
+  A template for creating a NAT gateway, Elastic public ip, a route table and a mapping for two private subnets
 
 Resources:
 
-  EIP:
+  EIPA:
     Type: AWS::EC2::EIP
     Properties:
         Domain: vpc
 
-  NAT:
+  EIPB:
+    Type: AWS::EC2::EIP
+    Properties:
+        Domain: vpc        
+
+  NATGWA:
     Type: AWS::EC2::NatGateway
     Properties:
         AllocationId:
           Fn::GetAtt:
-          - EIP
+          - EIPA
           - AllocationId
         SubnetId: !ImportValue vpc-subnet-weba
         Tags:
         - Key: Name
-          Value: Nat-Gateway
+          Value: Nat-Gateway-A
 
-  VpcRouteTable:
+  NATGWB:
+    Type: AWS::EC2::NatGateway
+    Properties:
+        AllocationId:
+          Fn::GetAtt:
+          - EIPB
+          - AllocationId
+        SubnetId: !ImportValue vpc-subnet-webb
+        Tags:
+        - Key: Name
+          Value: Nat-Gateway-B        
+
+  VpcRouteTableA:
       Type: AWS::EC2::RouteTable
-      DependsOn: NAT
+      DependsOn: NATGWA
       Properties: 
         Tags: 
           - Key: Name
             Value: vpc-private-rt-A
-        VpcId: !ImportValue vpc        
+        VpcId: !ImportValue vpc
 
-  Route:
+  VpcRouteTableB:
+      Type: AWS::EC2::RouteTable
+      DependsOn: NATGWB
+      Properties: 
+        Tags: 
+          - Key: Name
+            Value: vpc-private-rt-B
+        VpcId: !ImportValue vpc
+
+  RouteA:
     Type: AWS::EC2::Route
     Properties:
         RouteTableId:
-          Ref: VpcRouteTable
+          Ref: VpcRouteTableA
         DestinationCidrBlock: 0.0.0.0/0
         NatGatewayId:
-          Ref: NAT
+          Ref: NATGWA
 
-  SubnetRoute1TableAssoc:
+  RouteB:
+    Type: AWS::EC2::Route
+    Properties:
+        RouteTableId:
+          Ref: VpcRouteTableB
+        DestinationCidrBlock: 0.0.0.0/0
+        NatGatewayId:
+          Ref: NATGWB
+
+  SubnetRouteATableAssoc1:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties: 
-          RouteTableId: !Ref VpcRouteTable
+          RouteTableId: !Ref VpcRouteTableA
           SubnetId: !ImportValue vpc-subnet-dba
 
-  SubnetRoute2TableAssoc:
+  SubnetRouteATableAssoc2:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties: 
-          RouteTableId: !Ref VpcRouteTable
-          SubnetId: !ImportValue vpc-subnet-dbb          
-
-  SubnetRoute3TableAssoc:
-      Type: AWS::EC2::SubnetRouteTableAssociation
-      Properties: 
-          RouteTableId: !Ref VpcRouteTable
-          SubnetId: !ImportValue vpc-subnet-dbc 
-
-
-  SubnetRoute4TableAssoc:
-      Type: AWS::EC2::SubnetRouteTableAssociation
-      Properties: 
-          RouteTableId: !Ref VpcRouteTable
+          RouteTableId: !Ref VpcRouteTableA
           SubnetId: !ImportValue vpc-subnet-appa
 
-  SubnetRoute5TableAssoc:
+  SubnetRouteBTableAssoc1:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties: 
-          RouteTableId: !Ref VpcRouteTable
-          SubnetId: !ImportValue vpc-subnet-appb          
+          RouteTableId: !Ref VpcRouteTableB
+          SubnetId: !ImportValue vpc-subnet-dbb
 
-  SubnetRoute6TableAssoc:
+  SubnetRouteBTableAssoc2:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties: 
-          RouteTableId: !Ref VpcRouteTable
-          SubnetId: !ImportValue vpc-subnet-appc           
+          RouteTableId: !Ref VpcRouteTableB
+          SubnetId: !ImportValue vpc-subnet-appb
