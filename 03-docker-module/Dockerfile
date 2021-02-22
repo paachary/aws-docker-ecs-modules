@@ -34,6 +34,6 @@ RUN chmod +x boot.sh
 
 USER microblog
 
-EXPOSE 80
+EXPOSE 8000
 
 ENTRYPOINT ["./boot.sh"]
