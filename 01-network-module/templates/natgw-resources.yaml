@@ -57,3 +57,22 @@ Resources:
       Properties: 
           RouteTableId: !Ref VpcRouteTable
           SubnetId: !ImportValue vpc-subnet-dbc 
+
+
+  SubnetRoute4TableAssoc:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+          RouteTableId: !Ref VpcRouteTable
+          SubnetId: !ImportValue vpc-subnet-appa
+
+  SubnetRoute5TableAssoc:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+          RouteTableId: !Ref VpcRouteTable
+          SubnetId: !ImportValue vpc-subnet-appb          
+
+  SubnetRoute6TableAssoc:
+      Type: AWS::EC2::SubnetRouteTableAssociation
+      Properties: 
+          RouteTableId: !Ref VpcRouteTable
+          SubnetId: !ImportValue vpc-subnet-appc           
