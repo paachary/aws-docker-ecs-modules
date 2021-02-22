@@ -392,7 +392,7 @@ Outputs:
         Description: A reference to the created subnet                
         Value: !Ref SubnetWebC       
         Export:
-            Name: vpc-subnet-webc    
+            Name: vpc-subnet-webc
     WebappSecurityGroup:
         Description: The security that needs to be attached to the ec2 instance running the webapp
         Value: !Ref EC2SecurityGroup

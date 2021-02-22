@@ -26,9 +26,9 @@ Resources:
       DBSubnetGroupDescription: Subnet group for the database instances
       DBSubnetGroupName: employee-subnet-group
       SubnetIds: 
-        - !ImportValue vpc-subnet-webc
-        - !ImportValue vpc-subnet-weba
-        - !ImportValue vpc-subnet-webb
+        - !ImportValue vpc-subnet-dbc
+        - !ImportValue vpc-subnet-dba
+        - !ImportValue vpc-subnet-dbb
 
   PostgresRds:
     Type: AWS::RDS::DBInstance
@@ -47,7 +47,7 @@ Resources:
       MasterUserPassword: '{{resolve:secretsmanager:PostgresRdsDbSecretPwd:SecretString:password}}'
       MultiAZ: false
       Port: 5432
-      PubliclyAccessible: true
+      PubliclyAccessible: false
       StorageType: gp2
       Tags: 
         - Key: Name
