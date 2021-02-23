@@ -8,11 +8,15 @@ RUN adduser --home /home/microblog --shell /bin/bash microblog
 
 WORKDIR /home/microblog
 
-RUN apt update && apt install -y git libpq-dev python3-pip
+RUN apt update && apt install -y git libpq-dev python3-pip jq
 
 RUN git clone https://github.com/paachary/flask-app.git
 
 WORKDIR /home/microblog/flask-app
+
+RUN pip3 install --upgrade pip 
+
+RUN pip3 --no-cache-dir install --upgrade awscli 
 
 RUN pip3 install virtualenv
 
