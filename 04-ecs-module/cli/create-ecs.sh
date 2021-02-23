@@ -12,7 +12,7 @@ aws ecs register-task-definition --cli-input-json file://~/environment/aws-docke
 aws elbv2 create-load-balancer --name blogapplication-alb --scheme internet-facing --type application --subnets REPLACE_ME_PUBLIC_SUBNET_ONE REPLACE_ME_PUBLIC_SUBNET_TWO > ~/environment/alb-output.json
 
 # Create A Load Balancer Target Group
-aws elbv2 create-target-group --name BlogApplication-TargetGroup --port 80 --protocol HTTP --target-type ip --vpc-id REPLACE_ME_VPC_ID --health-check-interval-seconds 10 --health-check-path / --health-check-protocol HTTP --healthy-threshold-count 3 --unhealthy-threshold-count 3 > ~/environment/target-group-output.json
+aws elbv2 create-target-group --name BlogApplication-TargetGroup --port 80 --protocol HTTP --target-type ip --vpc-id REPLACE_ME_VPC_ID --health-check-interval-seconds 100 --health-check-timeout-seconds 50 --health-check-path / --health-check-protocol HTTP --healthy-threshold-count 3 --unhealthy-threshold-count 3 > ~/environment/target-group-output.json
 
 # Create A Load Balancer Listener
 aws elbv2 create-listener --default-actions TargetGroupArn=REPLACE_ME_NLB_TARGET_GROUP_ARN,Type=forward --load-balancer-arn REPLACE_ME_NLB_ARN --port 80 --protocol HTTP

@@ -2,6 +2,10 @@
   "serviceName": "BlogApplication-Service",
   "cluster": "BlogApplication-Cluster",
   "launchType": "FARGATE",
+  "schedulingStrategy": "REPLICA",
+  "deploymentController": {
+      "type": "CODE_DEPLOY"
+  },  
   "deploymentConfiguration": {
     "maximumPercent": 200,
     "minimumHealthyPercent": 0

@@ -4,7 +4,7 @@
 docker build . -t REPLACE_ME_AWS_ACCOUNT_ID.dkr.ecr.REPLACE_ME_REGION.amazonaws.com/blogapplication/service:latest
 
 # Test the service locally
-docker run -p 8000:8000 REPLACE_ME_WITH_DOCKER_IMAGE_TAG
+docker run -p 80:8000 REPLACE_ME_WITH_DOCKER_IMAGE_TAG
 
 # Create the ECR repostiory
 aws ecr create-repository --repository-name blogapplication/service
